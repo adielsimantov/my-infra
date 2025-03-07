@@ -29,6 +29,16 @@ jobs:
         with:
           terraform_version: 1.11.1
 
+      - name: Cache Terraform modules and plugins
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+            .terraform
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
       - name: Terraform Init
         run: terraform init -input=false
 
