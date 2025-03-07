@@ -14,6 +14,7 @@ jobs:
 
     env:
       TF_IN_AUTOMATION: true
+      TF_CLI_ARGS: -chdir=terraform
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
