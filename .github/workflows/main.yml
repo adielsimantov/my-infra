@@ -46,4 +46,9 @@ jobs:
           directory: "./terraform"
           apply: true
           apply-args: "-auto-approve"
+          setup: false
+          init: false
+          format: false
+          validate: false
+          plan: false
         
