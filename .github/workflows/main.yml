@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-terraform-
 
       - name: Terraform Init
-        run: terraform init -input=false -chdir=terraform
+        run: terraform -input=false -chdir=terraform init
 
       - name: Terraform Validate
         run: terraform validate 
