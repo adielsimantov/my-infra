@@ -44,7 +44,7 @@ jobs:
           init: true
           format: false
           validate: true
-          plan: true
+          plan: false
     
       
         
