@@ -34,10 +34,10 @@ jobs:
         with:
           path: terraform
 
-      - name: terraform plan
-        uses: dflook/terraform-plan@v1
-        with:
-          path: terraform
+      # - name: terraform plan
+      #   uses: dflook/terraform-plan@v1
+      #   with:
+      #     path: terraform
         
   terraform_deploy:
     needs: terraform_plan
