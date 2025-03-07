@@ -24,31 +24,33 @@ jobs:
           role-to-assume: ${{ vars.OIDC_AWS_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.11.1
+      # - name: Set up Terraform
+      #   uses: hashicorp/setup-terraform@v2
+      #   with:
+      #     terraform_version: 1.11.1
 
-      - name: terraform validate
-        uses: dflook/terraform-validate@v1
-        with:
-          path: terraform
-        
-  terraform_deploy:
-    needs: terraform_plan
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
+      # - name: terraform validate
+      #   uses: dflook/terraform-validate@v1
+      #   with:
+      #     path: terraform
       - name: terraform apply
         uses: "infinite-automations/terraform-all-in-one@v1.2.0"
+        if: github.ref == 'refs/heads/main'
         with:
-          directory: "./terraform"
+          directory: "terraform"
           apply: true
           apply-args: "-auto-approve"
-          setup: false
-          init: false
+          setup: true
+          init: true
           format: false
-          validate: false
-          plan: false
+          validate: true
+          plan: true
+    
+      
+        
+  # terraform_deploy:
+  #   needs: terraform_plan
+  #   runs-on: ubuntu-latest
+    
+
         
