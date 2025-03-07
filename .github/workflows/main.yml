@@ -14,8 +14,6 @@ jobs:
 
     env:
       TF_IN_AUTOMATION: true
-      TF_CLI_ARGS: "-input=false"
-
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
