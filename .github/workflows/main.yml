@@ -35,6 +35,7 @@ jobs:
           path: terraform
         
   terraform_deploy:
+    needs: terraform_plan
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
