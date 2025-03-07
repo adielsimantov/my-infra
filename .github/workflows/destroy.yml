@@ -1,0 +1,33 @@
+name: Terraform destroy
+
+on:
+  push:
+    branches:
+      - "**"   
+  workflow_dispatch:
+jobs:
+  terraform_destroy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  
+      contents: read    
+
+    env:
+      TF_IN_AUTOMATION: true
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: terraform destroy
+        uses: "infinite-automations/terraform-all-in-one@v1.2.0"
+        if: github.ref == 'refs/heads/main'
+        with:
+          directory: "terraform"
+          apply: false
+          setup: true
+          init: true
+          format: false
+          validate: false
+          plan: false
+          destroy: true
+          destroy-args: "-auto-approve"
