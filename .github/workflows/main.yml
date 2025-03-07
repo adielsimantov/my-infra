@@ -14,8 +14,6 @@ jobs:
 
     env:
       TF_IN_AUTOMATION: true
-      TF_CLI_ARGS: "-input=false"
-
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
@@ -23,23 +21,13 @@ jobs:
       - name: Authenticate with AWS using OIDC
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::YOUR-AWS-ACCOUNT-ID:role/YOUR-ROLE-NAME
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ vars.OIDC_AWS_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.11.1
-
-      - name: Cache Terraform modules and plugins
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.terraform.d/plugin-cache
-            .terraform
-          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-          restore-keys: |
-            ${{ runner.os }}-terraform-
 
       - name: Terraform Init
         run: terraform init -input=false
@@ -50,7 +38,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -input=false
         
-  deploy:
+  terraform_deploy:
     runs-on: ubuntu-latest
     needs: terraform_plan
     if: github.ref == 'refs/heads/main'
