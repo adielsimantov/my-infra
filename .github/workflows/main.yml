@@ -30,18 +30,21 @@ jobs:
         with:
           terraform_version: 1.11.1
 
-      - name: Cache Terraform modules and plugins
-        uses: actions/cache@v3
+      - name: Configure Terraform plugin cache
+        run: |
+          echo "TF_PLUGIN_CACHE_DIR=$HOME/terraform/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
+          mkdir --parents "$HOME/terraform/.terraform.d/plugin-cache"
+      - name: Cache Terraform
+        uses: actions/cache@v4
         with:
           path: |
-            ~/.terraform.d/plugin-cache
-            .terraform
-          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
+            ~/terraform/.terraform.d/plugin-cache
+          key: terraform-${{ runner.os }}-${{ hashFiles('**/terraform/.terraform.lock.hcl') }}
           restore-keys: |
-            ${{ runner.os }}-terraform-
+            terraform-${{ runner.os }}-
 
       - name: Terraform Init
-        run: terraform -input=false -chdir=terraform init
+        run: terraform init -input=false
 
       - name: Terraform Validate
         run: terraform validate 
