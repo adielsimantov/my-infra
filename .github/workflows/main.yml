@@ -33,11 +33,6 @@ jobs:
         uses: dflook/terraform-validate@v1
         with:
           path: terraform
-
-      # - name: terraform plan
-      #   uses: dflook/terraform-plan@v1
-      #   with:
-      #     path: terraform
         
   terraform_deploy:
     needs: terraform_plan
@@ -46,8 +41,9 @@ jobs:
 
     steps:
       - name: terraform apply
-        uses: dflook/terraform-apply@v1
+        uses: "infinite-automations/terraform-all-in-one@v1.2.0"
         with:
-          path: terraform
-          auto_approve: true
+          directory: "./terraform"
+          apply: true
+          apply-args: "-auto-approve"
         
